@@ -4,8 +4,6 @@ import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
-import com.algaworks.algafood.infrastructure.repository.spec.RestauranteComFreteGratisSpec;
-import com.algaworks.algafood.infrastructure.repository.spec.RestauranteComNomeSemelhanteSpec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +16,13 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import static com.algaworks.algafood.infrastructure.repository.spec.RestauranteSpec.comFreteGratis;
+import static com.algaworks.algafood.infrastructure.repository.spec.RestauranteSpec.comNomeSemelhante;
 
 @RestController
 @RequestMapping("restaurantes")
@@ -61,10 +63,8 @@ public class RestauranteController {
     }
 
     @GetMapping("com-frete-gratis")
-    public List<Restaurante> getMethodName(String nome) {
-        var comFreteGratis= new RestauranteComFreteGratisSpec();
-        var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
-        return restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante));
+    public List<Restaurante> getMethodName(@RequestParam String nome) {
+        return restauranteRepository.findComFreteGratis(nome);
     }
     
 
@@ -101,6 +101,11 @@ public class RestauranteController {
         } catch (EntidadeNaoEncontradaException exception) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/primeiro")
+    public Optional<Restaurante> primeiro() {
+        return restauranteRepository.buscarPrimeiro();
     }
 
     public void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino) {

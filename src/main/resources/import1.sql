@@ -5,7 +5,7 @@ INSERT INTO restaurante (NOME, COZINHA_ID, TAXA_FRETE, ATIVO, ABERTO, DATA_CADAS
 INSERT INTO restaurante (NOME, COZINHA_ID, TAXA_FRETE, ATIVO, ABERTO, DATA_CADASTRO) VALUES ('Burger King', 1, 10.99, 1, 1, now());
 INSERT INTO restaurante (NOME, COZINHA_ID, TAXA_FRETE, ATIVO, ABERTO, DATA_CADASTRO) VALUES ('Churrascaria do tiao', 2, 14.99, 1, 1, now());
 INSERT INTO restaurante (NOME, COZINHA_ID, TAXA_FRETE, ATIVO, ABERTO, DATA_CADASTRO) VALUES ('Giraffas - Shopping Beira Mar', 2, 17.99, 1, 1, now());
-INSERT INTO restaurante (NOME, COZINHA_ID, TAXA_FRETE, ATIVO, ABERTO, DATA_CADASTRO) VALUES ('Mc Donald`s - Estreito', 1, 5.99, 1, 1, now());
+INSERT INTO restaurante (NOME, COZINHA_ID, TAXA_FRETE, ATIVO, ABERTO, DATA_CADASTRO) VALUES ('Mc Donald`s - Estreito', 1, 0, 1, 1, now());
 
 INSERT INTO forma_pagamento (DESCRICAO) values ('CREDITO');
 INSERT INTO forma_pagamento (DESCRICAO) values ('DEBITO');

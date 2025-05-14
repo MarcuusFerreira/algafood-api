@@ -1,7 +1,10 @@
 package com.algaworks.algafood.infrastructure.repository;
 
 import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepositoryQueries;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -17,11 +20,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.algaworks.algafood.infrastructure.repository.spec.RestauranteSpec.comFreteGratis;
+import static com.algaworks.algafood.infrastructure.repository.spec.RestauranteSpec.comNomeSemelhante;
+
 @Repository
 public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 
     @PersistenceContext
     private EntityManager manager;
+
+    @Lazy
+    @Autowired
+    private RestauranteRepository restauranteRepository;
 
     @Override
     public List<Restaurante> find(String nome, BigDecimal taxaFreteMinima, BigDecimal taxaFreteMaxima) {
@@ -43,43 +53,9 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
                 .getResultList();
     }
 
-/*
     @Override
-    public List<Restaurante> find(String nome, BigDecimal taxaFreteMinima, BigDecimal taxaFreteMaxima) {
-        StringBuilder jpql = new StringBuilder();
-        jpql.append("from Restaurante where 0 = 0 ");
-
-        var parametros = new HashMap<String, Object>();
-
-        if (StringUtils.hasLength(nome)) {
-            jpql.append("and lower(nome) like lower(:nome) ");
-            parametros.put("nome", "%" + nome + "%");
-        }
-
-        if(taxaFreteMinima != null) {
-            jpql.append(" and taxaFrete >= :taxaFreteMinima ");
-            parametros.put("taxaFreteMinima", taxaFreteMinima);
-        }
-
-        if(taxaFreteMaxima != null) {
-            jpql.append("and taxaFrete <= :taxaFreteMaxima ");
-            parametros.put("taxaFreteMaxima", taxaFreteMaxima);
-        }
-
-        TypedQuery<Restaurante> query = manager.createQuery(jpql.toString(), Restaurante.class);
-        parametros.forEach(query::setParameter);
-        return query.getResultList();
+    public List<Restaurante> findComFreteGratis(String nome) {
+        return restauranteRepository.findAll(comFreteGratis().and(comNomeSemelhante((nome))));
     }
-
-    @Override
-    public List<Restaurante> find(String nome, BigDecimal taxaFreteMinima, BigDecimal taxaFreteMaxima) {
-        var jpql = "from Restaurante where nome like :nome and taxaFrete between :taxaFreteMinima and :taxaFreteMaxima";
-        return manager.createQuery(jpql, Restaurante.class)
-                .setParameter("nome", "%" + nome + "%")
-                .setParameter("taxaFreteMinima", taxaFreteMinima)
-                .setParameter("taxaFreteMaxima", taxaFreteMaxima)
-                .getResultList();
-    }
-*/
 
 }
